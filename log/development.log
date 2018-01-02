@@ -146,3 +146,10 @@ Processing by ListsController#show as HTML
   [1m[35mItem Load (0.3ms)[0m  SELECT "items".* FROM "items" WHERE "items"."list_id" = ?  [["list_id", 1]]
   Rendered lists/show.html.erb within layouts/application (53.9ms)
 Completed 200 OK in 110ms (Views: 99.2ms | ActiveRecord: 0.6ms)
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Migrating to AddStatusToItems (20160313004948)
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36m (4.8ms)[0m  [1mALTER TABLE "items" ADD "status" integer DEFAULT 0[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES (?)  [["version", "20160313004948"]]
+  [1m[36m (9.8ms)[0m  [1mcommit transaction[0m
+  [1m[35mActiveRecord::SchemaMigration Load (0.2ms)[0m  SELECT "schema_migrations".* FROM "schema_migrations"
