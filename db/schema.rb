@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180102165645) do
+ActiveRecord::Schema.define(version: 20180105134006) do
 
   create_table "items", force: :cascade do |t|
     t.string   "description"
@@ -19,6 +19,7 @@ ActiveRecord::Schema.define(version: 20180102165645) do
     t.datetime "created_at",              null: false
     t.datetime "updated_at",              null: false
     t.integer  "status",      default: 0
+    t.integer  "priority"
   end
 
   create_table "lists", force: :cascade do |t|
@@ -27,11 +28,24 @@ ActiveRecord::Schema.define(version: 20180102165645) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "shared_lists", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "list_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "shared_lists", ["list_id"], name: "index_shared_lists_on_list_id"
+  add_index "shared_lists", ["user_id"], name: "index_shared_lists_on_user_id"
+
   create_table "users", force: :cascade do |t|
     t.string   "email"
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
     t.string   "password_digest"
+    t.string   "uid"
+    t.string   "provider"
+    t.string   "nickname"
   end
 
 end

@@ -10,6 +10,9 @@ class ListsController < ApplicationController
   def show
     @list = List.find(params[:id])
     @item = Item.new
+    if !can_current_user?(:view, @list)
+      redirect_to :back, :notice => "Can't find that"
+    end
   end
 
   def create
@@ -21,9 +24,18 @@ class ListsController < ApplicationController
       render :index
     end
   end
+
+  def edit
+    @list = List.find(params[:id])
+    if !can_current_user?(:edit, @list)
+      redirect_to root_path, :notice => "Can't find that..."
+    end
+  end
+
   private
 
     def list_params # strong parameters
       params.require(:list).permit(:name)
     end
+
 end

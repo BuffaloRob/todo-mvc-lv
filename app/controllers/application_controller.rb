@@ -21,4 +21,11 @@ class ApplicationController < ActionController::Base
     # This is a HELPER METHOD, please let me use it in my view (this is done on line 5)
     @current_user ||= User.find(session[:user_id]) if session[:user_id]
   end
+
+  def can_current_usr?(action, object)
+
+    object.send("#{acion}able_by?", current_user) ### Dynamic Dispatch
+  end
+
+
 end

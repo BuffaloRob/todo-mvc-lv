@@ -2553,3 +2553,121 @@ Processing by ListsController#index as HTML
   [1m[35mList Load (0.3ms)[0m  SELECT "lists".* FROM "lists"
   Rendered lists/index.html.erb within layouts/application (34.6ms)
 Completed 200 OK in 559ms (Views: 526.9ms | ActiveRecord: 1.0ms)
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Migrating to AddPriorityToItems (20180105133535)
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36m (0.4ms)[0m  [1mALTER TABLE "items" ADD "priority" integer[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES (?)  [["version", "20180105133535"]]
+  [1m[36m (8.4ms)[0m  [1mcommit transaction[0m
+Migrating to AddMultipleFieldsToUsers (20180105133738)
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36m (0.4ms)[0m  [1mALTER TABLE "users" ADD "uid" varchar[0m
+  [1m[35m (0.3ms)[0m  ALTER TABLE "users" ADD "provider" varchar
+  [1m[36m (0.2ms)[0m  [1mALTER TABLE "users" ADD "nickname" varchar[0m
+  [1m[35mSQL (0.1ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES (?)  [["version", "20180105133738"]]
+  [1m[36m (7.7ms)[0m  [1mcommit transaction[0m
+Migrating to CreateSharedLists (20180105134006)
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36m (0.3ms)[0m  [1mCREATE TABLE "shared_lists" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "user_id" integer, "list_id" integer, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL) [0m
+  [1m[35m (2.9ms)[0m  select sqlite_version(*)
+  [1m[36m (0.2ms)[0m  [1mCREATE  INDEX "index_shared_lists_on_user_id" ON "shared_lists" ("user_id")[0m
+  [1m[35m (2.2ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_shared_lists_on_user_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_shared_lists_on_user_id' AND type='index'
+
+  [1m[36m (0.2ms)[0m  [1mCREATE  INDEX "index_shared_lists_on_list_id" ON "shared_lists" ("list_id")[0m
+  [1m[35mSQL (0.1ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES (?)  [["version", "20180105134006"]]
+  [1m[36m (8.4ms)[0m  [1mcommit transaction[0m
+  [1m[35mActiveRecord::SchemaMigration Load (0.1ms)[0m  SELECT "schema_migrations".* FROM "schema_migrations"
+  [1m[36m (0.2ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_shared_lists_on_list_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_shared_lists_on_list_id' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_shared_lists_on_user_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_shared_lists_on_user_id' AND type='index'
+
+
+
+Started GET "/" for 127.0.0.1 at 2018-01-05 08:41:53 -0500
+  [1m[36mActiveRecord::SchemaMigration Load (0.3ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Processing by ListsController#index as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :authentication_required rendered or redirected
+Completed 302 Found in 30ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for 127.0.0.1 at 2018-01-05 08:41:54 -0500
+Processing by SessionsController#new as HTML
+  Rendered sessions/new.html.erb within layouts/application (11.0ms)
+Completed 200 OK in 648ms (Views: 646.5ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/assets/jquery.self-660adc51e0224b731d29f575a6f1ec167ba08ad06ed5deca4f1e8654c135bf4c.js?body=1" for 127.0.0.1 at 2018-01-05 08:41:55 -0500
+
+
+Started GET "/auth/github" for 127.0.0.1 at 2018-01-05 08:42:06 -0500
+
+
+Started GET "/auth/github/callback?code=e50642eceb4c55097e2f&state=a46949c36005a3bd57ecf4d658a5a40aa39a2ae1e4a621e8" for 127.0.0.1 at 2018-01-05 08:42:07 -0500
+Processing by SessionsController#create as HTML
+  Parameters: {"code"=>"e50642eceb4c55097e2f", "state"=>"a46949c36005a3bd57ecf4d658a5a40aa39a2ae1e4a621e8", "provider"=>"github"}
+  [1m[35mUser Load (0.3ms)[0m  SELECT  "users".* FROM "users" WHERE "users"."email" = ?  ORDER BY "users"."id" ASC LIMIT 1  [["email", "peckham.rob@gmail.com"]]
+Redirected to http://localhost:3000/
+Completed 302 Found in 47ms (ActiveRecord: 0.9ms)
+
+
+Started GET "/" for 127.0.0.1 at 2018-01-05 08:42:08 -0500
+Processing by ListsController#index as HTML
+  [1m[36mUser Load (0.3ms)[0m  [1mSELECT  "users".* FROM "users" WHERE "users"."id" = ? LIMIT 1[0m  [["id", 6]]
+  [1m[35mList Load (0.6ms)[0m  SELECT "lists".* FROM "lists"
+  Rendered lists/index.html.erb within layouts/application (52.1ms)
+Completed 200 OK in 134ms (Views: 107.1ms | ActiveRecord: 1.2ms)
+
+
+Started GET "/lists/1" for 127.0.0.1 at 2018-01-05 08:42:13 -0500
+Processing by ListsController#show as HTML
+  Parameters: {"id"=>"1"}
+  [1m[36mUser Load (0.3ms)[0m  [1mSELECT  "users".* FROM "users" WHERE "users"."id" = ? LIMIT 1[0m  [["id", 6]]
+  [1m[35mList Load (0.2ms)[0m  SELECT  "lists".* FROM "lists" WHERE "lists"."id" = ? LIMIT 1  [["id", 1]]
+  [1m[36mItem Load (0.5ms)[0m  [1mSELECT "items".* FROM "items" WHERE "items"."list_id" = ?[0m  [["list_id", 1]]
+  [1m[35mList Load (0.5ms)[0m  SELECT  "lists".* FROM "lists" WHERE "lists"."id" = ? LIMIT 1  [["id", 1]]
+  Rendered items/_item_li.html.erb (29.0ms)
+  Rendered lists/show.html.erb within layouts/application (102.5ms)
+Completed 200 OK in 253ms (Views: 226.5ms | ActiveRecord: 4.6ms)
+
+
+Started POST "/lists/1/items" for 127.0.0.1 at 2018-01-05 08:42:18 -0500
+Processing by ItemsController#create as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"aFV0asFfu23OfjeIHcBv1eBOxc73uLRMYHr7qsy3cVSEdsSffTmbuzyd0U2U+WmOEdn3IJkwqIm2jftPSaQw6A==", "item"=>{"description"=>"milk"}, "commit"=>"Create Item", "list_id"=>"1"}
+  [1m[36mList Load (0.2ms)[0m  [1mSELECT  "lists".* FROM "lists" WHERE "lists"."id" = ? LIMIT 1[0m  [["id", 1]]
+  [1m[35m (0.2ms)[0m  begin transaction
+  [1m[36mSQL (0.6ms)[0m  [1mINSERT INTO "items" ("description", "list_id", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["description", "milk"], ["list_id", 1], ["created_at", "2018-01-05 13:42:18.220248"], ["updated_at", "2018-01-05 13:42:18.220248"]]
+  [1m[35m (8.8ms)[0m  commit transaction
+Redirected to http://localhost:3000/lists/1
+Completed 302 Found in 25ms (ActiveRecord: 9.7ms)
+
+
+Started GET "/lists/1" for 127.0.0.1 at 2018-01-05 08:42:18 -0500
+Processing by ListsController#show as HTML
+  Parameters: {"id"=>"1"}
+  [1m[36mUser Load (0.1ms)[0m  [1mSELECT  "users".* FROM "users" WHERE "users"."id" = ? LIMIT 1[0m  [["id", 6]]
+  [1m[35mList Load (0.1ms)[0m  SELECT  "lists".* FROM "lists" WHERE "lists"."id" = ? LIMIT 1  [["id", 1]]
+  [1m[36mItem Load (0.1ms)[0m  [1mSELECT "items".* FROM "items" WHERE "items"."list_id" = ?[0m  [["list_id", 1]]
+  [1m[35mList Load (0.1ms)[0m  SELECT  "lists".* FROM "lists" WHERE "lists"."id" = ? LIMIT 1  [["id", 1]]
+  [1m[36mCACHE (0.0ms)[0m  [1mSELECT  "lists".* FROM "lists" WHERE "lists"."id" = ? LIMIT 1[0m  [["id", 1]]
+  Rendered items/_item_li.html.erb (8.4ms)
+  Rendered lists/show.html.erb within layouts/application (24.6ms)
+Completed 200 OK in 71ms (Views: 67.0ms | ActiveRecord: 0.5ms)
