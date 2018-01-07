@@ -1,5 +1,4 @@
 class Item < ActiveRecord::Base
-<<<<<<< HEAD
   # http://api.rubyonrails.org/classes/ActiveRecord/Associations/ClassMethods.html#method-i-belongs_to
   belongs_to :list # Add methods to my model.
   validates :description, :presence => true
@@ -15,8 +14,5 @@ class Item < ActiveRecord::Base
   def incomplete?
     self.status == STATUS[:incomplete]
   end
-=======
-  belongs_to :list
->>>>>>> origin
   
 end
