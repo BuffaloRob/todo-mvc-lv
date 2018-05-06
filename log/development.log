@@ -1,0 +1,558 @@
+  [1m[36m (4.9ms)[0m  [1mCREATE TABLE "schema_migrations" ("version" varchar NOT NULL) [0m
+  [1m[35m (0.1ms)[0m  select sqlite_version(*)
+  [1m[36m (2.9ms)[0m  [1mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [1m[35mActiveRecord::SchemaMigration Load (0.1ms)[0m  SELECT "schema_migrations".* FROM "schema_migrations"
+Migrating to CreateLists (20160310040747)
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.3ms)[0m  CREATE TABLE "lists" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL) 
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20160310040747"]]
+  [1m[35m (16.2ms)[0m  commit transaction
+Migrating to CreateItems (20160311012237)
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.3ms)[0m  CREATE TABLE "items" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "description" varchar, "list_id" integer, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL) 
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20160311012237"]]
+  [1m[35m (4.8ms)[0m  commit transaction
+Migrating to AddStatusToItems (20160313004948)
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.2ms)[0m  ALTER TABLE "items" ADD "status" integer DEFAULT 0
+  [1m[36mSQL (0.1ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20160313004948"]]
+  [1m[35m (1.7ms)[0m  commit transaction
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+
+
+Started GET "/" for 127.0.0.1 at 2018-05-06 08:01:44 -0400
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Processing by ListsController#index as HTML
+  [1m[35mList Load (0.4ms)[0m  SELECT "lists".* FROM "lists"
+  Rendered lists/index.html.erb within layouts/application (14.9ms)
+Completed 200 OK in 649ms (Views: 631.8ms | ActiveRecord: 0.8ms)
+
+
+Started POST "/lists" for 127.0.0.1 at 2018-05-06 08:01:49 -0400
+Processing by ListsController#create as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"/5bhpqIdDBeadyeBB8DxB00H0gWnqpW4NgvFSFK8UlBLXG2CPVx3uxtCJHdUGsPfe1ApACouYYQk4bYFFdRP6g==", "list"=>{"name"=>"groceries"}, "commit"=>"Create List"}
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO "lists" ("name", "created_at", "updated_at") VALUES (?, ?, ?)  [["name", "groceries"], ["created_at", "2018-05-06 12:01:49.638631"], ["updated_at", "2018-05-06 12:01:49.638631"]]
+  [1m[36m (11.5ms)[0m  [1mcommit transaction[0m
+Redirected to http://localhost:3000/lists/1
+Completed 302 Found in 17ms (ActiveRecord: 11.9ms)
+
+
+Started GET "/lists/1" for 127.0.0.1 at 2018-05-06 08:01:49 -0400
+Processing by ListsController#show as HTML
+  Parameters: {"id"=>"1"}
+  [1m[35mList Load (0.2ms)[0m  SELECT  "lists".* FROM "lists" WHERE "lists"."id" = ? LIMIT 1  [["id", 1]]
+  [1m[36mItem Load (0.2ms)[0m  [1mSELECT "items".* FROM "items" WHERE "items"."list_id" = ?[0m  [["list_id", 1]]
+  Rendered items/_item_li.html.erb (0.0ms)
+  Rendered lists/show.html.erb within layouts/application (16.0ms)
+Completed 200 OK in 46ms (Views: 27.3ms | ActiveRecord: 2.1ms)
+
+
+Started POST "/lists/1/items" for 127.0.0.1 at 2018-05-06 08:01:52 -0400
+Processing by ItemsController#create as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"KIgT0F1nRah/Nl3xONRpoqm0Bn2gqfIUuPY/FvK/3iGcQp/0wiY+BP4DXgdrDlt6n+P9eC0tBiiqHExbtdfDmw==", "item"=>{"description"=>"milk"}, "commit"=>"Create Item", "list_id"=>"1"}
+  [1m[35mList Load (0.1ms)[0m  SELECT  "lists".* FROM "lists" WHERE "lists"."id" = ? LIMIT 1  [["id", 1]]
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "items" ("description", "list_id", "created_at", "updated_at") VALUES (?, ?, ?, ?)  [["description", "milk"], ["list_id", 1], ["created_at", "2018-05-06 12:01:52.706873"], ["updated_at", "2018-05-06 12:01:52.706873"]]
+  [1m[36m (3.2ms)[0m  [1mcommit transaction[0m
+Redirected to http://localhost:3000/lists/1
+Completed 302 Found in 12ms (ActiveRecord: 3.6ms)
+
+
+Started GET "/lists/1" for 127.0.0.1 at 2018-05-06 08:01:52 -0400
+Processing by ListsController#show as HTML
+  Parameters: {"id"=>"1"}
+  [1m[35mList Load (0.3ms)[0m  SELECT  "lists".* FROM "lists" WHERE "lists"."id" = ? LIMIT 1  [["id", 1]]
+  [1m[36mItem Load (0.1ms)[0m  [1mSELECT "items".* FROM "items" WHERE "items"."list_id" = ?[0m  [["list_id", 1]]
+  Rendered items/_item_li.html.erb (5.5ms)
+  Rendered lists/show.html.erb within layouts/application (9.5ms)
+Completed 200 OK in 26ms (Views: 23.4ms | ActiveRecord: 0.3ms)
+
+
+Started GET "/lists/1" for 127.0.0.1 at 2018-05-06 08:07:11 -0400
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Processing by ListsController#show as HTML
+  Parameters: {"id"=>"1"}
+  [1m[35mList Load (0.3ms)[0m  SELECT  "lists".* FROM "lists" WHERE "lists"."id" = ? LIMIT 1  [["id", 1]]
+  [1m[36mItem Load (0.2ms)[0m  [1mSELECT "items".* FROM "items" WHERE "items"."list_id" = ?[0m  [["list_id", 1]]
+  Rendered items/_item_li.html.erb (4.2ms)
+  Rendered lists/show.html.erb within layouts/application (53.3ms)
+Completed 200 OK in 345ms (Views: 309.3ms | ActiveRecord: 1.4ms)
+
+
+Started GET "/assets/todomvc-base.self-9eb594d8e952a551ecb29c785c324969df19668ea6e14ba69b758af79baca809.css?body=1" for 127.0.0.1 at 2018-05-06 08:07:11 -0400
+
+
+Started GET "/assets/lists.self-5e64df0201ac31cda15d2138ec18719920a1502ebf642aebcddafc969bfe3284.css?body=1" for 127.0.0.1 at 2018-05-06 08:07:11 -0400
+
+
+Started GET "/assets/application.self-860170c7ab1ca088027e93d68592059edd583aacf6fd47eea1c1c5332b5a9db9.css?body=1" for 127.0.0.1 at 2018-05-06 08:07:11 -0400
+
+
+Started GET "/assets/jquery.self-660adc51e0224b731d29f575a6f1ec167ba08ad06ed5deca4f1e8654c135bf4c.js?body=1" for 127.0.0.1 at 2018-05-06 08:07:11 -0400
+
+
+Started GET "/assets/jquery_ujs.self-e87806d0cf4489aeb1bb7288016024e8de67fd18db693fe026fe3907581e53cd.js?body=1" for 127.0.0.1 at 2018-05-06 08:07:11 -0400
+
+
+Started GET "/assets/items.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for 127.0.0.1 at 2018-05-06 08:07:11 -0400
+
+
+Started GET "/assets/lists.self-9d4b2205ff736a0fd786f2190e96956207bdff8a1be9030fbf6c080af703dc13.js?body=1" for 127.0.0.1 at 2018-05-06 08:07:12 -0400
+
+
+Started GET "/assets/application.self-377610cd7c1509e934744c810e3b4cf672dfbcacac3274e7d039827e2ae0fcc7.js?body=1" for 127.0.0.1 at 2018-05-06 08:07:12 -0400
+
+
+Started DELETE "/lists/1/items/1" for 127.0.0.1 at 2018-05-06 08:07:22 -0400
+Processing by ItemsController#destroy as HTML
+  Parameters: {"authenticity_token"=>"4KnlA9LaEoj3rwGXk2pTtkkoTDFuugQyS41QHq68AtdUY2knTZtpJHaaAmHAsGFuf3+3NOM+8A5ZZyNT6dQfbQ==", "list_id"=>"1", "id"=>"1"}
+  [1m[35mItem Load (0.6ms)[0m  SELECT  "items".* FROM "items" WHERE "items"."id" = ? LIMIT 1  [["id", 1]]
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35mSQL (0.2ms)[0m  DELETE FROM "items" WHERE "items"."id" = ?  [["id", 1]]
+  [1m[36m (5.4ms)[0m  [1mcommit transaction[0m
+  [1m[35mList Load (0.2ms)[0m  SELECT  "lists".* FROM "lists" WHERE "lists"."id" = ? LIMIT 1  [["id", 1]]
+Redirected to http://localhost:3000/lists/1
+Completed 302 Found in 11ms (ActiveRecord: 6.4ms)
+
+
+Started GET "/lists/1" for 127.0.0.1 at 2018-05-06 08:07:22 -0400
+Processing by ListsController#show as HTML
+  Parameters: {"id"=>"1"}
+  [1m[36mList Load (0.1ms)[0m  [1mSELECT  "lists".* FROM "lists" WHERE "lists"."id" = ? LIMIT 1[0m  [["id", 1]]
+  [1m[35mItem Load (0.1ms)[0m  SELECT "items".* FROM "items" WHERE "items"."list_id" = ?  [["list_id", 1]]
+  Rendered items/_item_li.html.erb (0.0ms)
+  Rendered lists/show.html.erb within layouts/application (5.0ms)
+Completed 200 OK in 34ms (Views: 31.0ms | ActiveRecord: 0.2ms)
+
+
+Started POST "/lists/1/items" for 127.0.0.1 at 2018-05-06 08:07:26 -0400
+Processing by ItemsController#create as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"ilWdXQPG7IEFLX1+A7ewxEQSKk8bLp6ggIi6Z5JBLBI+nxF5nIeXLYQYfohQbYIcckXRSpaqapySYskq1SkxqA==", "item"=>{"description"=>"milk"}, "commit"=>"Create Item", "list_id"=>"1"}
+  [1m[36mList Load (0.1ms)[0m  [1mSELECT  "lists".* FROM "lists" WHERE "lists"."id" = ? LIMIT 1[0m  [["id", 1]]
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO "items" ("description", "list_id", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["description", "milk"], ["list_id", 1], ["created_at", "2018-05-06 12:07:26.395914"], ["updated_at", "2018-05-06 12:07:26.395914"]]
+  [1m[35m (2.6ms)[0m  commit transaction
+Redirected to http://localhost:3000/lists/1
+Completed 302 Found in 10ms (ActiveRecord: 3.1ms)
+
+
+Started GET "/lists/1" for 127.0.0.1 at 2018-05-06 08:07:26 -0400
+Processing by ListsController#show as HTML
+  Parameters: {"id"=>"1"}
+  [1m[36mList Load (0.1ms)[0m  [1mSELECT  "lists".* FROM "lists" WHERE "lists"."id" = ? LIMIT 1[0m  [["id", 1]]
+  [1m[35mItem Load (0.1ms)[0m  SELECT "items".* FROM "items" WHERE "items"."list_id" = ?  [["list_id", 1]]
+  Rendered items/_item_li.html.erb (1.7ms)
+  Rendered lists/show.html.erb within layouts/application (6.9ms)
+Completed 200 OK in 26ms (Views: 25.1ms | ActiveRecord: 0.2ms)
+
+
+Started GET "/lists/1" for 127.0.0.1 at 2018-05-06 08:09:14 -0400
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Processing by ListsController#show as HTML
+  Parameters: {"id"=>"1"}
+  [1m[35mList Load (0.2ms)[0m  SELECT  "lists".* FROM "lists" WHERE "lists"."id" = ? LIMIT 1  [["id", 1]]
+  [1m[36mItem Load (0.4ms)[0m  [1mSELECT "items".* FROM "items" WHERE "items"."list_id" = ?[0m  [["list_id", 1]]
+  Rendered items/_item_li.html.erb (3.0ms)
+  Rendered lists/show.html.erb within layouts/application (35.1ms)
+Completed 200 OK in 351ms (Views: 321.6ms | ActiveRecord: 1.2ms)
+
+
+Started GET "/assets/todomvc-base.self-9eb594d8e952a551ecb29c785c324969df19668ea6e14ba69b758af79baca809.css?body=1" for 127.0.0.1 at 2018-05-06 08:09:14 -0400
+
+
+Started GET "/assets/lists.self-5e64df0201ac31cda15d2138ec18719920a1502ebf642aebcddafc969bfe3284.css?body=1" for 127.0.0.1 at 2018-05-06 08:09:14 -0400
+
+
+Started GET "/assets/application.self-860170c7ab1ca088027e93d68592059edd583aacf6fd47eea1c1c5332b5a9db9.css?body=1" for 127.0.0.1 at 2018-05-06 08:09:14 -0400
+
+
+Started GET "/assets/jquery.self-660adc51e0224b731d29f575a6f1ec167ba08ad06ed5deca4f1e8654c135bf4c.js?body=1" for 127.0.0.1 at 2018-05-06 08:09:14 -0400
+
+
+Started GET "/assets/jquery_ujs.self-e87806d0cf4489aeb1bb7288016024e8de67fd18db693fe026fe3907581e53cd.js?body=1" for 127.0.0.1 at 2018-05-06 08:09:14 -0400
+
+
+Started GET "/assets/items.self-da54a5d7a3ae34c9c2c54c3ceba706a40e8c556b4a0d05542c4cac625b4ba699.js?body=1" for 127.0.0.1 at 2018-05-06 08:09:14 -0400
+
+
+Started GET "/assets/application.self-377610cd7c1509e934744c810e3b4cf672dfbcacac3274e7d039827e2ae0fcc7.js?body=1" for 127.0.0.1 at 2018-05-06 08:09:14 -0400
+
+
+Started GET "/assets/lists.self-9d4b2205ff736a0fd786f2190e96956207bdff8a1be9030fbf6c080af703dc13.js?body=1" for 127.0.0.1 at 2018-05-06 08:09:14 -0400
+
+
+Started GET "/lists/1" for 127.0.0.1 at 2018-05-06 08:12:31 -0400
+Processing by ListsController#show as HTML
+  Parameters: {"id"=>"1"}
+  [1m[35mList Load (0.2ms)[0m  SELECT  "lists".* FROM "lists" WHERE "lists"."id" = ? LIMIT 1  [["id", 1]]
+  [1m[36mItem Load (0.1ms)[0m  [1mSELECT "items".* FROM "items" WHERE "items"."list_id" = ?[0m  [["list_id", 1]]
+  Rendered items/_item_li.html.erb (1.8ms)
+  Rendered lists/show.html.erb within layouts/application (6.1ms)
+Completed 200 OK in 100ms (Views: 97.8ms | ActiveRecord: 0.3ms)
+
+
+Started GET "/assets/todomvc-base.self-9eb594d8e952a551ecb29c785c324969df19668ea6e14ba69b758af79baca809.css?body=1" for 127.0.0.1 at 2018-05-06 08:12:31 -0400
+
+
+Started GET "/assets/lists.self-5e64df0201ac31cda15d2138ec18719920a1502ebf642aebcddafc969bfe3284.css?body=1" for 127.0.0.1 at 2018-05-06 08:12:31 -0400
+
+
+Started GET "/assets/application.self-860170c7ab1ca088027e93d68592059edd583aacf6fd47eea1c1c5332b5a9db9.css?body=1" for 127.0.0.1 at 2018-05-06 08:12:31 -0400
+
+
+Started GET "/assets/jquery.self-660adc51e0224b731d29f575a6f1ec167ba08ad06ed5deca4f1e8654c135bf4c.js?body=1" for 127.0.0.1 at 2018-05-06 08:12:31 -0400
+
+
+Started GET "/assets/jquery_ujs.self-e87806d0cf4489aeb1bb7288016024e8de67fd18db693fe026fe3907581e53cd.js?body=1" for 127.0.0.1 at 2018-05-06 08:12:31 -0400
+
+
+Started GET "/assets/items.self-e2b625ed4affc081ad3fa18452ee5cea322a5efe77093c473a4e841c86caea91.js?body=1" for 127.0.0.1 at 2018-05-06 08:12:31 -0400
+
+
+Started GET "/assets/lists.self-9d4b2205ff736a0fd786f2190e96956207bdff8a1be9030fbf6c080af703dc13.js?body=1" for 127.0.0.1 at 2018-05-06 08:12:31 -0400
+
+
+Started GET "/assets/application.self-377610cd7c1509e934744c810e3b4cf672dfbcacac3274e7d039827e2ae0fcc7.js?body=1" for 127.0.0.1 at 2018-05-06 08:12:31 -0400
+
+
+Started POST "/lists/1/items" for 127.0.0.1 at 2018-05-06 08:12:35 -0400
+Processing by ItemsController#create as */*
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"X2XNsCi2NM4n/SAlachJfsJzUnYbDJaoLx6frOUgsHHrr0GUt/dPYqbII9M6Enum9CSpc5aIYpQ99Ozhokityw==", "item"=>{"description"=>"cookies"}, "list_id"=>"1"}
+  [1m[35mList Load (0.3ms)[0m  SELECT  "lists".* FROM "lists" WHERE "lists"."id" = ? LIMIT 1  [["id", 1]]
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "items" ("description", "list_id", "created_at", "updated_at") VALUES (?, ?, ?, ?)  [["description", "cookies"], ["list_id", 1], ["created_at", "2018-05-06 12:12:35.737685"], ["updated_at", "2018-05-06 12:12:35.737685"]]
+  [1m[36m (6.7ms)[0m  [1mcommit transaction[0m
+Redirected to http://localhost:3000/lists/1
+Completed 302 Found in 16ms (ActiveRecord: 7.4ms)
+
+
+Started GET "/lists/1" for 127.0.0.1 at 2018-05-06 08:12:35 -0400
+Processing by ListsController#show as */*
+  Parameters: {"id"=>"1"}
+  [1m[35mList Load (0.1ms)[0m  SELECT  "lists".* FROM "lists" WHERE "lists"."id" = ? LIMIT 1  [["id", 1]]
+  [1m[36mItem Load (0.1ms)[0m  [1mSELECT "items".* FROM "items" WHERE "items"."list_id" = ?[0m  [["list_id", 1]]
+  Rendered items/_item_li.html.erb (6.6ms)
+  Rendered lists/show.html.erb within layouts/application (12.2ms)
+Completed 200 OK in 30ms (Views: 29.0ms | ActiveRecord: 0.2ms)
+
+
+Started GET "/lists/1" for 127.0.0.1 at 2018-05-06 08:12:58 -0400
+Processing by ListsController#show as HTML
+  Parameters: {"id"=>"1"}
+  [1m[35mList Load (0.2ms)[0m  SELECT  "lists".* FROM "lists" WHERE "lists"."id" = ? LIMIT 1  [["id", 1]]
+  [1m[36mItem Load (0.1ms)[0m  [1mSELECT "items".* FROM "items" WHERE "items"."list_id" = ?[0m  [["list_id", 1]]
+  Rendered items/_item_li.html.erb (9.5ms)
+  Rendered lists/show.html.erb within layouts/application (13.3ms)
+Completed 200 OK in 25ms (Views: 23.9ms | ActiveRecord: 0.3ms)
+
+
+Started GET "/assets/todomvc-base.self-9eb594d8e952a551ecb29c785c324969df19668ea6e14ba69b758af79baca809.css?body=1" for 127.0.0.1 at 2018-05-06 08:12:58 -0400
+
+
+Started GET "/assets/lists.self-5e64df0201ac31cda15d2138ec18719920a1502ebf642aebcddafc969bfe3284.css?body=1" for 127.0.0.1 at 2018-05-06 08:12:58 -0400
+
+
+Started GET "/assets/application.self-860170c7ab1ca088027e93d68592059edd583aacf6fd47eea1c1c5332b5a9db9.css?body=1" for 127.0.0.1 at 2018-05-06 08:12:58 -0400
+
+
+Started GET "/assets/jquery.self-660adc51e0224b731d29f575a6f1ec167ba08ad06ed5deca4f1e8654c135bf4c.js?body=1" for 127.0.0.1 at 2018-05-06 08:12:58 -0400
+
+
+Started GET "/assets/jquery_ujs.self-e87806d0cf4489aeb1bb7288016024e8de67fd18db693fe026fe3907581e53cd.js?body=1" for 127.0.0.1 at 2018-05-06 08:12:58 -0400
+
+
+Started GET "/assets/items.self-e2b625ed4affc081ad3fa18452ee5cea322a5efe77093c473a4e841c86caea91.js?body=1" for 127.0.0.1 at 2018-05-06 08:12:58 -0400
+
+
+Started GET "/assets/lists.self-9d4b2205ff736a0fd786f2190e96956207bdff8a1be9030fbf6c080af703dc13.js?body=1" for 127.0.0.1 at 2018-05-06 08:12:58 -0400
+
+
+Started GET "/assets/application.self-377610cd7c1509e934744c810e3b4cf672dfbcacac3274e7d039827e2ae0fcc7.js?body=1" for 127.0.0.1 at 2018-05-06 08:12:58 -0400
+
+
+Started POST "/lists/1/items" for 127.0.0.1 at 2018-05-06 08:13:05 -0400
+Processing by ItemsController#create as */*
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"SLoz6BExR4yLy8QlSsXaj6FPmzElvsz7SgRS8akqbP78cL/MjnA8IAr+x9MZH+hXlxhgNKg6OMdY7iG87kJxRA==", "item"=>{"description"=>"ginger"}, "list_id"=>"1"}
+  [1m[35mList Load (0.1ms)[0m  SELECT  "lists".* FROM "lists" WHERE "lists"."id" = ? LIMIT 1  [["id", 1]]
+  [1m[36m (0.3ms)[0m  [1mbegin transaction[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "items" ("description", "list_id", "created_at", "updated_at") VALUES (?, ?, ?, ?)  [["description", "ginger"], ["list_id", 1], ["created_at", "2018-05-06 12:13:05.034306"], ["updated_at", "2018-05-06 12:13:05.034306"]]
+  [1m[36m (2.6ms)[0m  [1mcommit transaction[0m
+Redirected to http://localhost:3000/lists/1
+Completed 302 Found in 10ms (ActiveRecord: 3.2ms)
+
+
+Started GET "/lists/1" for 127.0.0.1 at 2018-05-06 08:13:05 -0400
+Processing by ListsController#show as */*
+  Parameters: {"id"=>"1"}
+  [1m[35mList Load (0.1ms)[0m  SELECT  "lists".* FROM "lists" WHERE "lists"."id" = ? LIMIT 1  [["id", 1]]
+  [1m[36mItem Load (0.1ms)[0m  [1mSELECT "items".* FROM "items" WHERE "items"."list_id" = ?[0m  [["list_id", 1]]
+  Rendered items/_item_li.html.erb (2.8ms)
+  Rendered lists/show.html.erb within layouts/application (7.4ms)
+Completed 200 OK in 27ms (Views: 25.6ms | ActiveRecord: 0.2ms)
+
+
+Started GET "/lists/1" for 127.0.0.1 at 2018-05-06 08:13:39 -0400
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Processing by ListsController#show as HTML
+  Parameters: {"id"=>"1"}
+  [1m[35mList Load (0.2ms)[0m  SELECT  "lists".* FROM "lists" WHERE "lists"."id" = ? LIMIT 1  [["id", 1]]
+  [1m[36mItem Load (1.3ms)[0m  [1mSELECT "items".* FROM "items" WHERE "items"."list_id" = ?[0m  [["list_id", 1]]
+  Rendered items/_item_li.html.erb (4.5ms)
+  Rendered lists/show.html.erb within layouts/application (32.3ms)
+Completed 200 OK in 292ms (Views: 265.8ms | ActiveRecord: 1.9ms)
+
+
+Started GET "/assets/todomvc-base.self-9eb594d8e952a551ecb29c785c324969df19668ea6e14ba69b758af79baca809.css?body=1" for 127.0.0.1 at 2018-05-06 08:13:40 -0400
+
+
+Started GET "/assets/application.self-860170c7ab1ca088027e93d68592059edd583aacf6fd47eea1c1c5332b5a9db9.css?body=1" for 127.0.0.1 at 2018-05-06 08:13:40 -0400
+
+
+Started GET "/assets/lists.self-5e64df0201ac31cda15d2138ec18719920a1502ebf642aebcddafc969bfe3284.css?body=1" for 127.0.0.1 at 2018-05-06 08:13:40 -0400
+
+
+Started GET "/assets/jquery.self-660adc51e0224b731d29f575a6f1ec167ba08ad06ed5deca4f1e8654c135bf4c.js?body=1" for 127.0.0.1 at 2018-05-06 08:13:40 -0400
+
+
+Started GET "/assets/jquery_ujs.self-e87806d0cf4489aeb1bb7288016024e8de67fd18db693fe026fe3907581e53cd.js?body=1" for 127.0.0.1 at 2018-05-06 08:13:40 -0400
+
+
+Started GET "/assets/items.self-e2b625ed4affc081ad3fa18452ee5cea322a5efe77093c473a4e841c86caea91.js?body=1" for 127.0.0.1 at 2018-05-06 08:13:40 -0400
+
+
+Started GET "/assets/lists.self-9d4b2205ff736a0fd786f2190e96956207bdff8a1be9030fbf6c080af703dc13.js?body=1" for 127.0.0.1 at 2018-05-06 08:13:40 -0400
+
+
+Started GET "/assets/application.self-377610cd7c1509e934744c810e3b4cf672dfbcacac3274e7d039827e2ae0fcc7.js?body=1" for 127.0.0.1 at 2018-05-06 08:13:40 -0400
+
+
+Started POST "/lists/1/items" for 127.0.0.1 at 2018-05-06 08:13:49 -0400
+Processing by ItemsController#create as */*
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"vcubKUJHv2rYWlnJlWA687+RvDCx4QV9OSo6qDhUUWcJARcN3QbExllvWj/GuggricZHNTxl8UErwEnlfzxM3Q==", "item"=>{"description"=>"bread"}, "list_id"=>"1"}
+  [1m[35mList Load (0.1ms)[0m  SELECT  "lists".* FROM "lists" WHERE "lists"."id" = ? LIMIT 1  [["id", 1]]
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO "items" ("description", "list_id", "created_at", "updated_at") VALUES (?, ?, ?, ?)  [["description", "bread"], ["list_id", 1], ["created_at", "2018-05-06 12:13:49.350957"], ["updated_at", "2018-05-06 12:13:49.350957"]]
+  [1m[36m (2.0ms)[0m  [1mcommit transaction[0m
+Redirected to http://localhost:3000/lists/1
+Completed 302 Found in 8ms (ActiveRecord: 2.5ms)
+
+
+Started GET "/lists/1" for 127.0.0.1 at 2018-05-06 08:13:49 -0400
+Processing by ListsController#show as */*
+  Parameters: {"id"=>"1"}
+  [1m[35mList Load (0.1ms)[0m  SELECT  "lists".* FROM "lists" WHERE "lists"."id" = ? LIMIT 1  [["id", 1]]
+  [1m[36mItem Load (0.1ms)[0m  [1mSELECT "items".* FROM "items" WHERE "items"."list_id" = ?[0m  [["list_id", 1]]
+  Rendered items/_item_li.html.erb (9.1ms)
+  Rendered lists/show.html.erb within layouts/application (17.0ms)
+Completed 200 OK in 40ms (Views: 39.0ms | ActiveRecord: 0.2ms)
+
+
+Started POST "/lists/1/items" for 127.0.0.1 at 2018-05-06 08:13:54 -0400
+Processing by ItemsController#create as */*
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"vcubKUJHv2rYWlnJlWA687+RvDCx4QV9OSo6qDhUUWcJARcN3QbExllvWj/GuggricZHNTxl8UErwEnlfzxM3Q==", "item"=>{"description"=>"bread"}, "list_id"=>"1"}
+  [1m[35mList Load (0.1ms)[0m  SELECT  "lists".* FROM "lists" WHERE "lists"."id" = ? LIMIT 1  [["id", 1]]
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "items" ("description", "list_id", "created_at", "updated_at") VALUES (?, ?, ?, ?)  [["description", "bread"], ["list_id", 1], ["created_at", "2018-05-06 12:13:54.802652"], ["updated_at", "2018-05-06 12:13:54.802652"]]
+  [1m[36m (3.5ms)[0m  [1mcommit transaction[0m
+Redirected to http://localhost:3000/lists/1
+Completed 302 Found in 8ms (ActiveRecord: 3.9ms)
+
+
+Started GET "/lists/1" for 127.0.0.1 at 2018-05-06 08:13:54 -0400
+Processing by ListsController#show as */*
+  Parameters: {"id"=>"1"}
+  [1m[35mList Load (0.1ms)[0m  SELECT  "lists".* FROM "lists" WHERE "lists"."id" = ? LIMIT 1  [["id", 1]]
+  [1m[36mItem Load (0.1ms)[0m  [1mSELECT "items".* FROM "items" WHERE "items"."list_id" = ?[0m  [["list_id", 1]]
+  Rendered items/_item_li.html.erb (6.1ms)
+  Rendered lists/show.html.erb within layouts/application (14.9ms)
+Completed 200 OK in 37ms (Views: 35.7ms | ActiveRecord: 0.2ms)
+
+
+Started GET "/" for 127.0.0.1 at 2018-05-06 08:20:20 -0400
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Processing by ListsController#index as HTML
+  [1m[35mList Load (0.1ms)[0m  SELECT "lists".* FROM "lists"
+  Rendered lists/index.html.erb within layouts/application (12.2ms)
+Completed 200 OK in 301ms (Views: 288.4ms | ActiveRecord: 0.4ms)
+
+
+Started GET "/assets/todomvc-base.self-9eb594d8e952a551ecb29c785c324969df19668ea6e14ba69b758af79baca809.css?body=1" for 127.0.0.1 at 2018-05-06 08:20:20 -0400
+
+
+Started GET "/assets/lists.self-5e64df0201ac31cda15d2138ec18719920a1502ebf642aebcddafc969bfe3284.css?body=1" for 127.0.0.1 at 2018-05-06 08:20:20 -0400
+
+
+Started GET "/assets/application.self-860170c7ab1ca088027e93d68592059edd583aacf6fd47eea1c1c5332b5a9db9.css?body=1" for 127.0.0.1 at 2018-05-06 08:20:20 -0400
+
+
+Started GET "/assets/jquery.self-660adc51e0224b731d29f575a6f1ec167ba08ad06ed5deca4f1e8654c135bf4c.js?body=1" for 127.0.0.1 at 2018-05-06 08:20:20 -0400
+
+
+Started GET "/assets/jquery_ujs.self-e87806d0cf4489aeb1bb7288016024e8de67fd18db693fe026fe3907581e53cd.js?body=1" for 127.0.0.1 at 2018-05-06 08:20:20 -0400
+
+
+Started GET "/assets/items.self-e5508c72ba54825507326f6d2da5da7a4e70599dd106696d0370836417feb5bb.js?body=1" for 127.0.0.1 at 2018-05-06 08:20:20 -0400
+
+
+Started GET "/assets/lists.self-9d4b2205ff736a0fd786f2190e96956207bdff8a1be9030fbf6c080af703dc13.js?body=1" for 127.0.0.1 at 2018-05-06 08:20:20 -0400
+
+
+Started GET "/assets/application.self-377610cd7c1509e934744c810e3b4cf672dfbcacac3274e7d039827e2ae0fcc7.js?body=1" for 127.0.0.1 at 2018-05-06 08:20:20 -0400
+
+
+Started GET "/lists/1" for 127.0.0.1 at 2018-05-06 08:20:23 -0400
+Processing by ListsController#show as HTML
+  Parameters: {"id"=>"1"}
+  [1m[36mList Load (0.2ms)[0m  [1mSELECT  "lists".* FROM "lists" WHERE "lists"."id" = ? LIMIT 1[0m  [["id", 1]]
+  [1m[35mItem Load (0.2ms)[0m  SELECT "items".* FROM "items" WHERE "items"."list_id" = ?  [["list_id", 1]]
+  Rendered items/_item_li.html.erb (5.3ms)
+  Rendered lists/show.html.erb within layouts/application (25.2ms)
+Completed 200 OK in 60ms (Views: 37.4ms | ActiveRecord: 0.6ms)
+
+
+Started POST "/lists/1/items" for 127.0.0.1 at 2018-05-06 08:20:28 -0400
+Processing by ItemsController#create as */*
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"RUIW1DrlqXtBgqw1nO2dp7LmkSbVn71hqrp8pvd735PxiJrwpaTS18C3r8PPN69/hLFqI1gbSV24UA/rsBPCKQ==", "item"=>{"description"=>"butter"}, "list_id"=>"1"}
+  [1m[36mList Load (0.1ms)[0m  [1mSELECT  "lists".* FROM "lists" WHERE "lists"."id" = ? LIMIT 1[0m  [["id", 1]]
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO "items" ("description", "list_id", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["description", "butter"], ["list_id", 1], ["created_at", "2018-05-06 12:20:28.368566"], ["updated_at", "2018-05-06 12:20:28.368566"]]
+  [1m[35m (5.9ms)[0m  commit transaction
+Redirected to http://localhost:3000/lists/1
+Completed 302 Found in 12ms (ActiveRecord: 6.4ms)
+
+
+Started GET "/lists/1" for 127.0.0.1 at 2018-05-06 08:20:28 -0400
+Processing by ListsController#show as */*
+  Parameters: {"id"=>"1"}
+  [1m[36mList Load (0.1ms)[0m  [1mSELECT  "lists".* FROM "lists" WHERE "lists"."id" = ? LIMIT 1[0m  [["id", 1]]
+  [1m[35mItem Load (0.1ms)[0m  SELECT "items".* FROM "items" WHERE "items"."list_id" = ?  [["list_id", 1]]
+  Rendered items/_item_li.html.erb (4.4ms)
+  Rendered lists/show.html.erb within layouts/application (9.6ms)
+Completed 200 OK in 24ms (Views: 22.3ms | ActiveRecord: 0.2ms)
+
+
+Started GET "/" for 127.0.0.1 at 2018-05-06 09:11:10 -0400
+Processing by ListsController#index as HTML
+  [1m[36mList Load (0.1ms)[0m  [1mSELECT "lists".* FROM "lists"[0m
+  Rendered lists/index.html.erb within layouts/application (1.2ms)
+Completed 200 OK in 77ms (Views: 76.5ms | ActiveRecord: 0.1ms)
+
+
+Started GET "/assets/todomvc-base.self-9eb594d8e952a551ecb29c785c324969df19668ea6e14ba69b758af79baca809.css?body=1" for 127.0.0.1 at 2018-05-06 09:11:10 -0400
+
+
+Started GET "/assets/lists.self-5e64df0201ac31cda15d2138ec18719920a1502ebf642aebcddafc969bfe3284.css?body=1" for 127.0.0.1 at 2018-05-06 09:11:10 -0400
+
+
+Started GET "/assets/application.self-860170c7ab1ca088027e93d68592059edd583aacf6fd47eea1c1c5332b5a9db9.css?body=1" for 127.0.0.1 at 2018-05-06 09:11:10 -0400
+
+
+Started GET "/assets/jquery.self-660adc51e0224b731d29f575a6f1ec167ba08ad06ed5deca4f1e8654c135bf4c.js?body=1" for 127.0.0.1 at 2018-05-06 09:11:10 -0400
+
+
+Started GET "/assets/jquery_ujs.self-e87806d0cf4489aeb1bb7288016024e8de67fd18db693fe026fe3907581e53cd.js?body=1" for 127.0.0.1 at 2018-05-06 09:11:10 -0400
+
+
+Started GET "/assets/application.self-377610cd7c1509e934744c810e3b4cf672dfbcacac3274e7d039827e2ae0fcc7.js?body=1" for 127.0.0.1 at 2018-05-06 09:11:10 -0400
+
+
+Started GET "/assets/lists.self-9d4b2205ff736a0fd786f2190e96956207bdff8a1be9030fbf6c080af703dc13.js?body=1" for 127.0.0.1 at 2018-05-06 09:11:10 -0400
+
+
+Started GET "/assets/items.self-9276f7a0b7d9b12a84a15e0c195123354b7f8b73de0af95a2218a3dc536ca3e1.js?body=1" for 127.0.0.1 at 2018-05-06 09:11:10 -0400
+
+
+Started GET "/" for 127.0.0.1 at 2018-05-06 09:11:36 -0400
+Processing by ListsController#index as HTML
+  [1m[35mList Load (0.1ms)[0m  SELECT "lists".* FROM "lists"
+  Rendered lists/index.html.erb within layouts/application (4.3ms)
+Completed 200 OK in 73ms (Views: 71.9ms | ActiveRecord: 0.1ms)
+
+
+Started GET "/assets/todomvc-base.self-9eb594d8e952a551ecb29c785c324969df19668ea6e14ba69b758af79baca809.css?body=1" for 127.0.0.1 at 2018-05-06 09:11:36 -0400
+
+
+Started GET "/assets/lists.self-5e64df0201ac31cda15d2138ec18719920a1502ebf642aebcddafc969bfe3284.css?body=1" for 127.0.0.1 at 2018-05-06 09:11:36 -0400
+
+
+Started GET "/assets/application.self-860170c7ab1ca088027e93d68592059edd583aacf6fd47eea1c1c5332b5a9db9.css?body=1" for 127.0.0.1 at 2018-05-06 09:11:36 -0400
+
+
+Started GET "/assets/jquery.self-660adc51e0224b731d29f575a6f1ec167ba08ad06ed5deca4f1e8654c135bf4c.js?body=1" for 127.0.0.1 at 2018-05-06 09:11:36 -0400
+
+
+Started GET "/assets/jquery_ujs.self-e87806d0cf4489aeb1bb7288016024e8de67fd18db693fe026fe3907581e53cd.js?body=1" for 127.0.0.1 at 2018-05-06 09:11:36 -0400
+
+
+Started GET "/assets/items.self-18c145302e216ea871468ec120b033d5592a1ad13d016f0894c058e8daeaf359.js?body=1" for 127.0.0.1 at 2018-05-06 09:11:36 -0400
+
+
+Started GET "/assets/lists.self-9d4b2205ff736a0fd786f2190e96956207bdff8a1be9030fbf6c080af703dc13.js?body=1" for 127.0.0.1 at 2018-05-06 09:11:36 -0400
+
+
+Started GET "/assets/application.self-377610cd7c1509e934744c810e3b4cf672dfbcacac3274e7d039827e2ae0fcc7.js?body=1" for 127.0.0.1 at 2018-05-06 09:11:36 -0400
+
+
+Started GET "/lists/1" for 127.0.0.1 at 2018-05-06 09:11:39 -0400
+Processing by ListsController#show as HTML
+  Parameters: {"id"=>"1"}
+  [1m[36mList Load (0.2ms)[0m  [1mSELECT  "lists".* FROM "lists" WHERE "lists"."id" = ? LIMIT 1[0m  [["id", 1]]
+  [1m[35mItem Load (0.1ms)[0m  SELECT "items".* FROM "items" WHERE "items"."list_id" = ?  [["list_id", 1]]
+  Rendered items/_item_li.html.erb (4.1ms)
+  Rendered lists/show.html.erb within layouts/application (6.7ms)
+Completed 200 OK in 22ms (Views: 20.9ms | ActiveRecord: 0.3ms)
+
+
+Started POST "/lists/1/items" for 127.0.0.1 at 2018-05-06 09:11:42 -0400
+Processing by ItemsController#create as JSON
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"5FltZyLD+raGt2H0FOFvfl6jte4/s8xzrWwMdt6HEPtQk+FDvYKBGgeCYgJHO12maPRO67I3OE+/hn87me8NQQ==", "item"=>{"description"=>"sugar"}, "list_id"=>"1"}
+  [1m[36mList Load (0.1ms)[0m  [1mSELECT  "lists".* FROM "lists" WHERE "lists"."id" = ? LIMIT 1[0m  [["id", 1]]
+  [1m[35m (0.0ms)[0m  begin transaction
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "items" ("description", "list_id", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["description", "sugar"], ["list_id", 1], ["created_at", "2018-05-06 13:11:42.322038"], ["updated_at", "2018-05-06 13:11:42.322038"]]
+  [1m[35m (2.5ms)[0m  commit transaction
+Completed 200 OK in 18ms (Views: 0.7ms | ActiveRecord: 2.8ms)
+
+
+Started GET "/lists/1" for 127.0.0.1 at 2018-05-06 09:16:52 -0400
+Processing by ListsController#show as HTML
+  Parameters: {"id"=>"1"}
+  [1m[36mList Load (0.1ms)[0m  [1mSELECT  "lists".* FROM "lists" WHERE "lists"."id" = ? LIMIT 1[0m  [["id", 1]]
+  [1m[35mItem Load (0.1ms)[0m  SELECT "items".* FROM "items" WHERE "items"."list_id" = ?  [["list_id", 1]]
+  Rendered items/_item_li.html.erb (6.9ms)
+  Rendered lists/show.html.erb within layouts/application (11.3ms)
+Completed 200 OK in 88ms (Views: 84.1ms | ActiveRecord: 0.2ms)
+
+
+Started GET "/assets/todomvc-base.self-9eb594d8e952a551ecb29c785c324969df19668ea6e14ba69b758af79baca809.css?body=1" for 127.0.0.1 at 2018-05-06 09:16:52 -0400
+
+
+Started GET "/assets/lists.self-5e64df0201ac31cda15d2138ec18719920a1502ebf642aebcddafc969bfe3284.css?body=1" for 127.0.0.1 at 2018-05-06 09:16:52 -0400
+
+
+Started GET "/assets/application.self-860170c7ab1ca088027e93d68592059edd583aacf6fd47eea1c1c5332b5a9db9.css?body=1" for 127.0.0.1 at 2018-05-06 09:16:52 -0400
+
+
+Started GET "/assets/jquery.self-660adc51e0224b731d29f575a6f1ec167ba08ad06ed5deca4f1e8654c135bf4c.js?body=1" for 127.0.0.1 at 2018-05-06 09:16:52 -0400
+
+
+Started GET "/assets/items.self-acc6bde01cd0a82c0ea16cc0ee785a846c4c0a958d02a7dde5b5a42464cd9111.js?body=1" for 127.0.0.1 at 2018-05-06 09:16:52 -0400
+
+
+Started GET "/assets/jquery_ujs.self-e87806d0cf4489aeb1bb7288016024e8de67fd18db693fe026fe3907581e53cd.js?body=1" for 127.0.0.1 at 2018-05-06 09:16:52 -0400
+
+
+Started GET "/assets/application.self-377610cd7c1509e934744c810e3b4cf672dfbcacac3274e7d039827e2ae0fcc7.js?body=1" for 127.0.0.1 at 2018-05-06 09:16:52 -0400
+
+
+Started GET "/assets/lists.self-9d4b2205ff736a0fd786f2190e96956207bdff8a1be9030fbf6c080af703dc13.js?body=1" for 127.0.0.1 at 2018-05-06 09:16:52 -0400
+
+
+Started POST "/lists/1/items" for 127.0.0.1 at 2018-05-06 09:17:01 -0400
+Processing by ItemsController#create as JSON
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"340BqNvgmgTYz9bDEIc8D38ppgDY9L5CR3mkrZEPJdtrR42MRKHhqFn61TVDXQ7XSX5dBVVwSn5Vk9fg1mc4YQ==", "item"=>{"description"=>"butt"}, "list_id"=>"1"}
+  [1m[36mList Load (0.1ms)[0m  [1mSELECT  "lists".* FROM "lists" WHERE "lists"."id" = ? LIMIT 1[0m  [["id", 1]]
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36mSQL (0.1ms)[0m  [1mINSERT INTO "items" ("description", "list_id", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["description", "butt"], ["list_id", 1], ["created_at", "2018-05-06 13:17:01.210773"], ["updated_at", "2018-05-06 13:17:01.210773"]]
+  [1m[35m (9.6ms)[0m  commit transaction
+Completed 200 OK in 14ms (Views: 0.4ms | ActiveRecord: 9.9ms)
